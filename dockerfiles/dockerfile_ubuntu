@@ -1,0 +1,70 @@
+##########################################################################################################################
+##Docker script for building the elt framework's docker image
+
+##__author__      = "Muthu Padalinathan"
+##__copyright__   = "Copyright 2020, Warner Music Group - Global Technology"
+##########################################################################################################################
+FROM ubuntu:18.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+### 3. Get Python, PIP
+
+RUN apt-get update && apt-get install -y software-properties-common gcc && add-apt-repository -y ppa:deadsnakes/ppa
+RUN apt-get install -y python3.8
+RUN apt-get update && apt-get install -y python3.8-distutils python3-apt python3.8-dev python3-pip
+RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.8 1
+RUN cd /usr/local/bin && ln -s /usr/bin/python3 python3
+RUN apt-get update && apt-get install -y build-essential python3-setuptools gcc libssl-dev wget
+
+RUN pip3 install --upgrade pip
+RUN pip3 install --upgrade cryptography
+
+RUN apt-get update && apt-get install -y libffi-dev libxslt-dev libxml2-dev libc-dev unzip
+RUN apt-get update && apt-get install -y postgresql libpq-dev postgresql-client postgresql-client-common libaio1
+RUN apt-get -y install p7zip-full
+
+#cx_oracle dependency install
+WORKDIR /opt/oracle
+RUN wget https://download.oracle.com/otn_software/linux/instantclient/instantclient-basiclite-linuxx64.zip && \
+    unzip instantclient-basiclite-linuxx64.zip && \
+    rm -f instantclient-basiclite-linuxx64.zip && \
+    cd instantclient* && \
+    rm -f *jdbc* *occi* *mysql* *jar uidrvci genezi adrci && \
+    echo /opt/oracle/instantclient* > /etc/ld.so.conf.d/oracle-instantclient.conf && \
+    ldconfig
+
+## pip install python packages
+RUN pip3 install --trusted-host pypi.python.org snowflake-connector-python
+RUN pip3 install --trusted-host pypi.python.org configparser
+RUN pip3 install --trusted-host pypi.python.org boto3
+RUN pip3 install --trusted-host pypi.python.org paramiko
+RUN pip3 install --trusted-host pypi.python.org psycopg2
+RUN pip3 install --trusted-host pypi.python.org psutil
+RUN pip3 install --trusted-host pypi.python.org cassandra-driver
+RUN pip3 install --trusted-host pypi.python.org cx_Oracle
+RUN pip3 install --trusted-host pypi.python.org pandas
+RUN pip3 install --trusted-host pypi.python.org openpyxl
+RUN pip3 install --trusted-host pypi.python.org s3fs
+RUN pip3 install --trusted-host pypi.python.org unicodecsv
+RUN pip3 install --trusted-host pypi.python.org ftputil
+RUN pip3 install --trusted-host pypi.python.org sqlparse
+RUN pip3 install --trusted-host pypi.python.org sql_metadata
+RUN pip3 install --trusted-host pypi.python.org google-cloud-spanner
+
+
+## add python folders to eltframework & chmod
+ADD ./ /eltframework
+RUN chmod 755 -R /eltframework
+
+#step to empty out the env.py file before pushing into repository
+RUN cp /eltframework/config/env_empty.py /eltframework/config/env.py
+
+WORKDIR /eltframework
+
+## parameters like target db environment needs to be set in the task definition
+
+ENV http_proxy=""
+ENV https_proxy=""
+
+CMD ["/usr/bin/python3","-m","common.run_job"]
