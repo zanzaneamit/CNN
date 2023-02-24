@@ -11,6 +11,8 @@ s.headers.update({
     'x-api-key': 'kXlFFTjuqWgABx3nXj5oXZn2VWW9ql93mURt'
 })
 
+
+
 page_cntr = 1
 while True:
     time.sleep(1)
