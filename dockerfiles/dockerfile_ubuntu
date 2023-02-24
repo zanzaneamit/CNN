@@ -57,6 +57,9 @@ RUN pip3 install --trusted-host pypi.python.org google-cloud-spanner
 ADD ./ /eltframework
 RUN chmod 755 -R /eltframework
 
+RUN ls -ltr .
+RUN ls -ltr /eltframework
+
 #step to empty out the env.py file before pushing into repository
 RUN cp /eltframework/config/env_empty.py /eltframework/config/env.py
 
