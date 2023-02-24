@@ -35,21 +35,21 @@ RUN wget https://download.oracle.com/otn_software/linux/instantclient/instantcli
     ldconfig
 
 ## pip install python packages
-RUN pip3 install --trusted-host pypi.python.org snowflake-connector-python
-RUN pip3 install --trusted-host pypi.python.org configparser
-RUN pip3 install --trusted-host pypi.python.org boto3
-RUN pip3 install --trusted-host pypi.python.org paramiko
-RUN pip3 install --trusted-host pypi.python.org psycopg2
-RUN pip3 install --trusted-host pypi.python.org psutil
-RUN pip3 install --trusted-host pypi.python.org cassandra-driver
-RUN pip3 install --trusted-host pypi.python.org cx_Oracle
-RUN pip3 install --trusted-host pypi.python.org pandas
-RUN pip3 install --trusted-host pypi.python.org openpyxl
-RUN pip3 install --trusted-host pypi.python.org s3fs
-RUN pip3 install --trusted-host pypi.python.org unicodecsv
-RUN pip3 install --trusted-host pypi.python.org ftputil
-RUN pip3 install --trusted-host pypi.python.org sqlparse
-RUN pip3 install --trusted-host pypi.python.org sql_metadata
+##RUN pip3 install --trusted-host pypi.python.org snowflake-connector-python
+##RUN pip3 install --trusted-host pypi.python.org configparser
+##RUN pip3 install --trusted-host pypi.python.org boto3
+##RUN pip3 install --trusted-host pypi.python.org paramiko
+##RUN pip3 install --trusted-host pypi.python.org psycopg2
+##RUN pip3 install --trusted-host pypi.python.org psutil
+##RUN pip3 install --trusted-host pypi.python.org cassandra-driver
+##RUN pip3 install --trusted-host pypi.python.org cx_Oracle
+##RUN pip3 install --trusted-host pypi.python.org pandas
+##RUN pip3 install --trusted-host pypi.python.org openpyxl
+##RUN pip3 install --trusted-host pypi.python.org s3fs
+##RUN pip3 install --trusted-host pypi.python.org unicodecsv
+##RUN pip3 install --trusted-host pypi.python.org ftputil
+##RUN pip3 install --trusted-host pypi.python.org sqlparse
+##RUN pip3 install --trusted-host pypi.python.org sql_metadata
 RUN pip3 install --trusted-host pypi.python.org google-cloud-spanner
 
 
@@ -61,6 +61,7 @@ RUN pwd
 RUN ls -ltr /
 RUN ls -ltr .
 RUN ls -ltr /eltframework
+RUN ls -ltr /eltframework/config
 
 #step to empty out the env.py file before pushing into repository
 RUN cp /eltframework/config/env_empty.py /eltframework/config/env.py
