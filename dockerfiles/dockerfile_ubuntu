@@ -57,6 +57,8 @@ RUN pip3 install --trusted-host pypi.python.org google-cloud-spanner
 ADD ./ /eltframework
 RUN chmod 755 -R /eltframework
 
+RUN pwd
+RUN ls -ltr /
 RUN ls -ltr .
 RUN ls -ltr /eltframework
 
